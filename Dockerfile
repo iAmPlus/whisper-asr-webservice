@@ -1,4 +1,4 @@
-FROM swaggerapi/swagger-ui:v4.18.2 AS swagger-ui
+FROM swaggerapi/swagger-ui:v5.9.1 AS swagger-ui
 FROM python:3.10-slim
 
 ENV POETRY_VENV=/app/.venv
@@ -11,7 +11,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 RUN python3 -m venv $POETRY_VENV \
     && $POETRY_VENV/bin/pip install -U pip setuptools \
-    && $POETRY_VENV/bin/pip install poetry==1.4.0
+    && $POETRY_VENV/bin/pip install poetry==1.6.1
 
 ENV PATH="${PATH}:${POETRY_VENV}/bin"
 
