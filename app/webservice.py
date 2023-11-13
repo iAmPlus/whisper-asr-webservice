@@ -90,13 +90,17 @@ def asr_bytes(
     initial_prompt: Union[str, None] = Query(default=None),
     encode : bool = Query(default=True, description="Encode audio first through ffmpeg"),
     output : Union[str, None] = Query(default="txt", enum=["txt", "vtt", "srt", "tsv", "json"]),
+    vad_filter: Annotated[bool | None, Query(
+                description="Enable the voice activity detection (VAD) to filter out parts of the audio without speech",
+                include_in_schema=(True if ASR_ENGINE == "faster_whisper" else False)
+            )] = False,
     word_timestamps : bool = Query(
         default=False,
         description="World level timestamps",
         include_in_schema=(True if ASR_ENGINE == "faster_whisper" else False)
     )
 ):
-    result = transcribe(load_audio_bytes(file_bytes, encode), task, language, initial_prompt, word_timestamps, output)
+    result = transcribe(load_audio_bytes(file_bytes, encode), task, language, initial_prompt, vad_filter, word_timestamps, output)
     return StreamingResponse(
         result,
         media_type="text/plain",
