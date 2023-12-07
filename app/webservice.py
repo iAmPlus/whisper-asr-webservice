@@ -6,6 +6,7 @@ from typing import BinaryIO, Union, Annotated
 import ffmpeg
 import numpy as np
 from fastapi import FastAPI, File, UploadFile, Query, applications
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi.responses import StreamingResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
@@ -33,6 +34,14 @@ app = FastAPI(
         "name": "MIT License",
         "url": projectMetadata['License']
     }
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
 )
 
 assets_path = os.getcwd() + "/swagger-ui-assets"
